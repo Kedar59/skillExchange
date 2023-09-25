@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock css %}
+{% block content %}
+<form  action="{% url 'register' %}" method="post">
+  {% csrf_token %}
+  <label for="username">Username</label>
+  <input type="text" name="username" required>
+  <br><hr><br>
+  <label for="email">Email</label>
+  <input type="email" name="email" required>
+  <br><hr><br>
+  <label for="password">Password</label>
+  <input type="password" name="password1" id="password1" required>
+  <br><hr><br>
+  <label for="password">Confirm Password</label>
+  <input type="password" name="password2" id="password2" required>
+  <br><hr><br>
+  <label for="fname">First Name</label>
+  <input type="text" name="fname" required>
+  <br><hr><br>
+  <label for="lname">Last Name</label>
+  <input type="text" name="lname" required>
+  <br><hr><br>
+  <label for="userBio">User Bio (max 255 characters)</label><br>
+  <textarea name="userBio" rows="4" maxlength="255" cols="10" required></textarea>
+  <!-- <label for="prof_path">Profile Picture</label>
+  <input type="file" name="prof_path" required accept="image/png" data-size="200kb"> -->
+  <br><hr><br>
+  <button type="submit" id="submit-button">Register</button>
+</form>
+<p>Have a account ? <a href="{% url 'login_view' %}">Login</a></p>
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock content %}

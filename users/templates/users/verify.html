@@ -1,0 +1,34 @@
+{% extends 'plain.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/verify.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock css %}
+{% block content %}
+<div class="container">
+    <h2>OTP Verification</h2>
+    <p>Please enter the OTP sent to your email to verify your account:</p>
+    <label for="otp">Enter OTP:</label>
+    <input type="text" id="otp" name="otp" required>
+</div>
+<script>
+    $('#otp').change(function(){
+    let otp = $('#otp').val();
+    if(otp=='{{otp}}'){
+        $.ajax(
+            {
+                type:'POST',
+                url:'{% url "verifyOTP" %}',
+                data:{'otp':otp,'first_name':'{{first_name}}','last_name':'{{last_name}}','username':'{{username}}',
+                        'email':'{{email}}','password':'{{password}}','userBio':`{{userBio}}`, },
+                success:function(data){
+                    console.log("OTP")
+                    window.location.href="/"
+                }
+
+            }
+        );
+    }
+})
+</script>
+{% endblock content %}

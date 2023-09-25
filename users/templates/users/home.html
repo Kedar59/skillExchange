@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css %}
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>User logged in success</h1>
+{% else %}
+    <p>User is not logged in.</p>
+    <!-- Display a message or login link for users who are not logged in -->
+{% endif %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock content %}

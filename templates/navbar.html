@@ -1,0 +1,37 @@
+{% load static %}
+<nav class="navbar">
+    <!-- LOGO -->
+    <div class="logo">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'images/logo.svg' %}" alt="logo">
+        </a>
+    </div>
+
+    <!-- NAVIGATION MENU -->
+    <ul class="nav-links">
+
+        <!-- USING CHECKBOX HACK -->
+        <input type="checkbox" id="checkbox_toggle" />
+        <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+
+        <!-- NAVIGATION MENUS -->
+        <div class="menu">
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'profile' %}">Profile</a></li>
+          <li><a href="{% url 'logout_view' %}">Logout</a></li>
+          {% else %}
+          <li><a href="{% url 'register' %}"> Register </a></li>
+          <li><a href="{% url 'login_view' %}">Login</a></li>    
+          {% endif %}
+            
+        </div>
+    </ul>
+</nav>
+{% if messages %}
+  {% for message in messages %}
+    <div class="popup-error" data-id="{{ forloop.counter }}">
+      <p>{{ message }}</p>
+      <span class="close-button">&times;</span>
+    </div>
+  {% endfor %}
+{% endif %}

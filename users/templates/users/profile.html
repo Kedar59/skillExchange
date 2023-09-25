@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css %}
+{% block content %}
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+    <h1>{{user.email}}</h1>
+    <h1>{{user.first_name}}</h1>
+    <h1>{{user.last_name}}</h1>
+    <h4>{{user.userBio}}</h4>
+    <!-- Display other user information here as needed -->
+{% else %}
+    <p>User is not logged in.</p>
+    <!-- Display a message or login link for users who are not logged in -->
+{% endif %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock content %}

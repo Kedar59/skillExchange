@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
+{% block content %}
+<form class="out" action="{% url 'login_view' %}" method="post">
+  {% csrf_token %}
+  <label for="email">Email</label>
+  <input type="email" name="email" required>
+
+  <label for="password">Password</label>
+  <input type="password" name="password" required>
+
+  <button type="submit">Login</button>
+</form>
+<p>Don't have a account ? <a href="{% url 'register' %}">Register</a></p>
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock content %}
