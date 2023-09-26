@@ -4,12 +4,11 @@ import re,random,os
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-User = get_user_model()
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-
+User = get_user_model()
 
 
 # for email verification
@@ -123,9 +122,10 @@ def login_view(request):
         if user is not None:
             # User authentication successful, log them in
             login(request, user)
-            return redirect(home)  # Redirect to the user's profile page after login
+            return redirect(profile)  # Redirect to the user's profile page after login
         else:
             messages.error(request, 'Invalid email or password.')
+            render(request, 'users/login.html')
     return render(request, 'users/login.html')
 @login_required
 def logout_view(request):
