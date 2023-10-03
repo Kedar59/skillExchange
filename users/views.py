@@ -134,4 +134,18 @@ def logout_view(request):
 @login_required
 def profile(request):
     user = request.user
+    if request.method == 'POST':
+        if 'update_first_name' in request.POST:
+            new_first_name = request.POST['update_first_name']
+            request.user.first_name = new_first_name
+            request.user.save()
+
+            if request.user.first_name != new_first_name:
+                messages.error(request, 'An error occurred while updating the first name. Please try again')
+                return render(request, "users/profile.html" , {'user':user})
+            
+            messages.success(request, ' First name updated successfully ')
+            return render(request, "users/profile.html" , {'user':user})
+            
+
     return render(request, "users/profile.html",{'user':user})

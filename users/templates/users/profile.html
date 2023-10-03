@@ -10,6 +10,12 @@
     <p>Welcome, {{ user.username }}!</p>
     <h1>{{user.email}}</h1>
     <h1>{{user.first_name}}</h1>
+<button id="update-first-name-button">Update First Name</button>
+    <form id="update-first-name-form" method="post" action="{% url 'profile-update' %}" style="display: none;">
+        {% csrf_token %}
+        <input type="text" name="update_first_name" value="{{ user.first_name }}">
+        <button type="submit">Submit</button>
+    </form>
     <h1>{{user.last_name}}</h1>
     <h4>{{user.userBio}}</h4>
     <!-- Display other user information here as needed -->
@@ -18,4 +24,5 @@
     <!-- Display a message or login link for users who are not logged in -->
 {% endif %}
 <script src="{% static 'js/home.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock content %}
