@@ -11,7 +11,7 @@
     <h1>{{user.email}}</h1>
     <h1>{{user.first_name}}</h1>
 <button id="update-first-name-button">Update First Name</button>
-    <form id="update-first-name-form" method="post" action="{% url 'profile-update' %}" style="display: none;">
+    <form id="update-first-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
         {% csrf_token %}
         <input type="text" name="update_first_name" value="{{ user.first_name }}">
         <button type="submit">Submit</button>
