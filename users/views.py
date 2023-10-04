@@ -40,7 +40,6 @@ def verifyOTP(request):
             return redirect(register)
     return JsonResponse({'data':'data'},status=200)
 # from .forms import RegistrationForm
-import os
 from supabase import create_client, Client
 url= os.environ.get("SUPABASE_URL")
 key= os.environ.get("SUPABASE_KEY")
@@ -137,10 +136,10 @@ def profile(request):
     if request.method == 'POST':
         if 'update_first_name' in request.POST:
             new_first_name = request.POST['update_first_name']
-            request.user.first_name = new_first_name
-            request.user.save()
+            user.first_name = new_first_name
+            user.save()
 
-            if request.user.first_name != new_first_name:
+            if user.first_name != new_first_name:
                 messages.error(request, 'An error occurred while updating the first name. Please try again')
                 return render(request, "users/profile.html" , {'user':user})
             
@@ -148,10 +147,10 @@ def profile(request):
             return render(request, "users/profile.html" , {'user':user})
         elif 'update_last_name' in request.POST:
             new_last_name = request.POST['update_last_name']
-            request.user.last_name = new_last_name
-            request.user.save()
+            user.last_name = new_last_name
+            user.save()
 
-            if request.user.last_name != new_last_name:
+            if user.last_name != new_last_name:
                 messages.error(request, 'An error occurred while updating the last name. Please try again')
                 return render(request, "users/profile.html" , {'user':user})
             
@@ -159,15 +158,49 @@ def profile(request):
             return render(request, "users/profile.html" , {'user':user})
         elif 'update_userBio' in request.POST:
             new_userBio = request.POST['update_userBio']
-            request.user.userBio = new_userBio
-            request.user.save()
+            user.userBio = new_userBio
+            user.save()
 
-            if request.user.userBio != new_userBio:
+            if user.userBio != new_userBio:
                 messages.error(request, 'An error occurred while updating the user Bio. Please try again')
                 return render(request, "users/profile.html" , {'user':user})
             
             messages.success(request, ' User Bio updated successfully ')
             return render(request, "users/profile.html" , {'user':user})
-            
+        elif 'update_prof_pic' in request.FILES:
+            prof_pic = request.FILES['update_prof_pic']
+            extension = prof_pic.name.split('.')[-1].lower()
 
+            # Define the storage bucket name (replace with your actual bucket name)
+            storage_bucket = 'profile_picture'
+            file_name = f"{user.username}.{extension}"
+            if request.user.has_prof_pic:
+                # delete the file from "profile_picture" bucket in supabase bucket with
+                old_file_name = f"{user.username}.{user.prof_extension}"
+                deletion_resp = supabase.storage.from_bucket(storage_bucket).remove([old_file_name])
+                if deletion_resp.status_code != 200:
+                    messages.error(request,f"{deletion_resp.status_code}Some error occoured while deleting your previous picture")
+                    return render(request , "users/profile.html" , {'user':user})
+                
+            response = supabase.storage.from_bucket(storage_bucket).upload(
+                file_name,
+                prof_pic.read(),
+                prof_pic.content_type
+            )
+
+            if response.status_code != 200:
+                messages.error(request, f"{response.status_code}Something went wrong while saving profile picture")
+                return render(request,'users/profile.html',{'user':user})
+            public_url = supabase.storage.get_public_url(storage_bucket, file_name)
+            user.prof_path = public_url
+            user.prof_extension = extension
+            user.has_prof_pic = True    
+            updated = user.save()    
+            if updated is None:
+                messages.error(request,"some error occoured while saving public url")
+                return render(request,'users/profile.html',{'user':user})
+            messages.success(request, "profile picture updated successfully")
+            return render(request,'users/profile.html',{'user':user})
+                
+            
     return render(request, "users/profile.html",{'user':user})

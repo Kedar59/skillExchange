@@ -24,19 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
         updateUserBioButton.style.display = 'none';
     });
 
-    // const setProfPicButton = document.getElementById('set-prof-pic-button');
-    // const updateProfPicButton = document.getElementById('update-prof-pic-button');
-    // const updateProfPicForm = document.getElementById('update-prof-pic-form');
+    const updateProfPicButton = document.getElementById('update-prof-pic-button');
+    const updateProfPicForm = document.getElementById('update-prof-pic-form');
 
-    // updateProfPicButton.addEventListener('click', function () {
-    //     updateProfPicForm.style.display = 'block';
-    //     updateProfPicButton.style.display = 'none';
-    // });
+    updateProfPicButton.addEventListener('click', function () {
+        updateProfPicForm.style.display = 'block';
+        updateProfPicButton.style.display = 'none';
+    });
 
-    // setProfPicButton.addEventListener('click', function () {
-    //     updateProfPicForm.style.display = 'block';
-    //     setProfPicButton.style.display = 'none';
-    // });
 
     // document.getElementById('profilePicInput').addEventListener('change', function () {
     //     const profilePicInput = document.getElementById('profilePicInput');

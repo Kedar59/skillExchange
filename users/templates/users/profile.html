@@ -9,19 +9,18 @@
 {% block content %}
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
-    <!-- {% if not user.has_prof_pic %}
+    {% if not user.has_prof_pic %}
     <img src="{% static 'images/default-prof.jpg' %}" alt="not displayed" class="prof-img-display">
-    <button id="set-prof-pic-button">Set profile picture</button>
     {% else %}
     <img src="{{ user.prof_path }}" alt="" class="prof-img-display">
-    <button id="update-prof-pic-button">Set profile picture</button>
     {% endif %}
+    <button id="update-prof-pic-button">Update profile picture</button>
         <form id="update-prof-pic-form" method="post" action="{% url 'profile' %}" style="display: none;" id="profilePicInput">
             {% csrf_token %}
-            <input type="image" name="update_prof_pic">
+            <input type="file" name="update_prof_pic" accept=".png .jpeg .jpg">
             <button type="submit">Submit</button>
         </form>
-        <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p> -->
+        <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p>
     <h1>{{user.email}}</h1>
     <h1 id="first_name_hide">{{user.first_name}}</h1>
         <button id="update-first-name-button">Update First Name</button>
