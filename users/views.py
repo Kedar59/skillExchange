@@ -146,27 +146,6 @@ def profile(request):
             
             messages.success(request, ' First name updated successfully ')
             return render(request, "users/profile.html" , {'user':user})
-        elif 'update_last_name' in request.POST:
-            new_last_name = request.POST['update_last_name']
-            request.user.last_name = new_last_name
-            request.user.save()
-
-            if request.user.last_name != new_last_name:
-                messages.error(request, 'An error occurred while updating the last name. Please try again')
-                return render(request, "users/profile.html" , {'user':user})
             
-            messages.success(request, ' Last name updated successfully ')
-            return render(request, "users/profile.html" , {'user':user})
-        elif 'update_userBio' in request.POST:
-            new_userBio = request.POST['update_userBio']
-            request.user.userBio = new_userBio
-            request.user.save()
-
-            if request.user.userBio != new_userBio:
-                messages.error(request, 'An error occurred while updating the user Bio. Please try again')
-                return render(request, "users/profile.html" , {'user':user})
-            
-            messages.success(request, ' User Bio updated successfully ')
-            return render(request, "users/profile.html" , {'user':user})
 
     return render(request, "users/profile.html",{'user':user})

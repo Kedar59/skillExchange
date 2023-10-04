@@ -9,27 +9,15 @@
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
     <h1>{{user.email}}</h1>
-    <h1 id="first_name_hide">{{user.first_name}}</h1>
-        <button id="update-first-name-button">Update First Name</button>
-            <form id="update-first-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
-                {% csrf_token %}
-                <input type="text" name="update_first_name" value="{{ user.first_name }}">
-                <button type="submit">Submit</button>
-            </form>
-    <h1 id="last_name_hide">{{user.last_name}}</h1>
-        <button id="update-last-name-button">Update Last Name</button>
-            <form id="update-last-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
-                {% csrf_token %}
-                <input type="text" name="update_last_name" value="{{ user.last_name }}">
-                <button type="submit">Submit</button>
-            </form>
-    <h1 id="user_bio_hide">{{user.userBio}}</h1>
-        <button id="update-userBio-button">Update user Bio Name</button>
-            <form id="update-userBio-form" method="post" action="{% url 'profile' %}" style="display: none;">
-                {% csrf_token %}
-                <textarea type="text" name="update_userBio" rows="4" maxlength="255" cols="10">{{ user.userBio }}</textarea>
-                <button type="submit">Submit</button>
-            </form>
+    <h1>{{user.first_name}}</h1>
+<button id="update-first-name-button">Update First Name</button>
+    <form id="update-first-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
+        {% csrf_token %}
+        <input type="text" name="update_first_name" value="{{ user.first_name }}">
+        <button type="submit">Submit</button>
+    </form>
+    <h1>{{user.last_name}}</h1>
+    <h4>{{user.userBio}}</h4>
     <!-- Display other user information here as needed -->
 {% else %}
     <p>User is not logged in.</p>
