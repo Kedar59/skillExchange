@@ -40,11 +40,11 @@ def verifyOTP(request):
             return redirect(register)
     return JsonResponse({'data':'data'},status=200)
 # from .forms import RegistrationForm
-# import os
-# from supabase import create_client, Client
-# url= os.environ.get("SUPABASE_URL")
-# key= os.environ.get("SUPABASE_KEY")
-# supabase = create_client(url, key)
+import os
+from supabase import create_client, Client
+url= os.environ.get("SUPABASE_URL")
+key= os.environ.get("SUPABASE_KEY")
+supabase = create_client(url, key)
 # Create your views here.
 
 def is_valid_password(password):
