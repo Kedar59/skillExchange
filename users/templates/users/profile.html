@@ -9,7 +9,7 @@
 {% block content %}
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
-    {% if not user.has_prof_pic %}
+    <!-- {% if not user.has_prof_pic %}
     <img src="{% static 'images/default-prof.jpg' %}" alt="not displayed" class="prof-img-display">
     <button id="set-prof-pic-button">Set profile picture</button>
     {% else %}
@@ -21,7 +21,7 @@
             <input type="image" name="update_prof_pic">
             <button type="submit">Submit</button>
         </form>
-        <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p>
+        <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p> -->
     <h1>{{user.email}}</h1>
     <h1 id="first_name_hide">{{user.first_name}}</h1>
         <button id="update-first-name-button">Update First Name</button>
@@ -41,7 +41,7 @@
         <button id="update-userBio-button">Update user Bio Name</button>
             <form id="update-userBio-form" method="post" action="{% url 'profile' %}" style="display: none;">
                 {% csrf_token %}
-                <textarea type="text" name="update_userBio" rows="4" maxlength="255" cols="10">{{ user.userBio }}</textarea>
+                <textarea name="update_userBio" rows="4" maxlength="255" cols="10">{{ user.userBio }}</textarea>
                 <button type="submit">Submit</button>
             </form>
     <!-- Display other user information here as needed -->

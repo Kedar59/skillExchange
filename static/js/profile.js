@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     const updateFirstNameButton = document.getElementById('update-first-name-button');
     const updateFirstNameForm = document.getElementById('update-first-name-form');
 
     updateFirstNameButton.addEventListener('click', function () {
-        console.log("I was clicked");
         updateFirstNameForm.style.display = 'block';
         updateFirstNameButton.style.display = 'none';
     });
@@ -24,34 +24,35 @@ document.addEventListener('DOMContentLoaded', function () {
         updateUserBioButton.style.display = 'none';
     });
 
-    const setProfPicButton = document.getElementById('set-prof-pic-button');
-    const updateProfPicButton = document.getElementById('update-prof-pic-button');
-    const updateProfPicForm = document.getElementById('update-prof-pic-form');
+    // const setProfPicButton = document.getElementById('set-prof-pic-button');
+    // const updateProfPicButton = document.getElementById('update-prof-pic-button');
+    // const updateProfPicForm = document.getElementById('update-prof-pic-form');
 
-    updateProfPicButton.addEventListener('click', function () {
-        updateProfPicForm.style.display = 'block';
-        updateProfPicButton.style.display = 'none';
-    });
+    // updateProfPicButton.addEventListener('click', function () {
+    //     updateProfPicForm.style.display = 'block';
+    //     updateProfPicButton.style.display = 'none';
+    // });
 
-    setProfPicButton.addEventListener('click', function () {
-        updateProfPicForm.style.display = 'block';
-        setProfPicButton.style.display = 'none';
-    });
+    // setProfPicButton.addEventListener('click', function () {
+    //     updateProfPicForm.style.display = 'block';
+    //     setProfPicButton.style.display = 'none';
+    // });
 
-    document.getElementById('profilePicInput').addEventListener('change', function () {
-        const profilePicInput = document.getElementById('profilePicInput');
-        const fileSizeError = document.getElementById('fileSizeError');
+    // document.getElementById('profilePicInput').addEventListener('change', function () {
+    //     const profilePicInput = document.getElementById('profilePicInput');
+    //     const fileSizeError = document.getElementById('fileSizeError');
     
-        if (profilePicInput.files.length > 0) {
-            const fileSize = profilePicInput.files[0].size; // Size in bytes
-            const maxSize = 250 * 1024; // 250KB in bytes
+    //     if (profilePicInput.files.length > 0) {
+    //         const fileSize = profilePicInput.files[0].size; // Size in bytes
+    //         const maxSize = 250 * 1024; // 250KB in bytes
     
-            if (fileSize > maxSize) {
-                fileSizeError.style.display = 'block';
-                profilePicInput.value = ''; // Clear the input to prevent upload
-            } else {
-                fileSizeError.style.display = 'none';
-            }
-        }
-    });
+    //         if (fileSize > maxSize) {
+    //             fileSizeError.style.display = 'block';
+    //             profilePicInput.value = ''; // Clear the input to prevent upload
+    //         } else {
+    //             fileSizeError.style.display = 'none';
+    //         }
+    //     }
+    // });
+
 });
