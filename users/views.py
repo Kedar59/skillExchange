@@ -168,30 +168,31 @@ def profile(request):
             messages.success(request, ' User Bio updated successfully ')
             return render(request, "users/profile.html" , {'user':user})
         elif 'update_prof_pic' in request.FILES:
+            print("I am here")
             prof_pic = request.FILES['update_prof_pic']
-            extension = prof_pic.name.split('.')[-1].lower()
+            extension: str = prof_pic.name.split('.')[-1].lower()
 
             # Define the storage bucket name (replace with your actual bucket name)
-            storage_bucket = 'profile_picture'
-            file_name = f"{user.username}.{extension}"
+            storage_bucket: str = 'profile_picture'
+            file_name: str = f"{user.username}.{extension}"
             if request.user.has_prof_pic:
                 # delete the file from "profile_picture" bucket in supabase bucket with
-                old_file_name = f"{user.username}.{user.prof_extension}"
-                deletion_resp = supabase.storage.from_bucket(storage_bucket).remove([old_file_name])
+                old_file_name: str = f"{user.username}.{user.prof_extension}"
+                deletion_resp = supabase.storage.from_(storage_bucket).remove(old_file_name)
                 if deletion_resp.status_code != 200:
                     messages.error(request,f"{deletion_resp.status_code}Some error occoured while deleting your previous picture")
                     return render(request , "users/profile.html" , {'user':user})
                 
-            response = supabase.storage.from_bucket(storage_bucket).upload(
+            response = supabase.storage.from_(storage_bucket).upload(
                 file_name,
                 prof_pic.read(),
-                prof_pic.content_type
+                {"content-type":f"image/{extension}"}
             )
 
             if response.status_code != 200:
                 messages.error(request, f"{response.status_code}Something went wrong while saving profile picture")
                 return render(request,'users/profile.html',{'user':user})
-            public_url = supabase.storage.get_public_url(storage_bucket, file_name)
+            public_url: str = supabase.storage.from_(storage_bucket).get_public_url(file_name)
             user.prof_path = public_url
             user.prof_extension = extension
             user.has_prof_pic = True    

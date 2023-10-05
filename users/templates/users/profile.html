@@ -15,9 +15,9 @@
     <img src="{{ user.prof_path }}" alt="" class="prof-img-display">
     {% endif %}
     <button id="update-prof-pic-button">Update profile picture</button>
-        <form id="update-prof-pic-form" method="post" action="{% url 'profile' %}" style="display: none;" id="profilePicInput">
+        <form id="update-prof-pic-form" method="post" enctype="multipart/form-data" action="{% url 'profile' %}" style="display: none;" id="profilePicInput">
             {% csrf_token %}
-            <input type="file" name="update_prof_pic" accept=".png .jpeg .jpg">
+            <input type="file" name="update_prof_pic" accept="images/*">
             <button type="submit">Submit</button>
         </form>
         <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p>
