@@ -178,11 +178,8 @@ def profile(request):
             if request.user.has_prof_pic:
                 # delete the file from "profile_picture" bucket in supabase bucket with
                 old_file_name: str = f"{user.username}.{user.prof_extension}"
-                deletion_resp = supabase.storage.from_(storage_bucket).remove(old_file_name)
-                if deletion_resp.status_code != 200:
-                    messages.error(request,f"{deletion_resp.status_code}Some error occoured while deleting your previous picture")
-                    return render(request , "users/profile.html" , {'user':user})
-                
+                response = supabase.storage.from_(storage_bucket).remove(old_file_name)
+            
             response = supabase.storage.from_(storage_bucket).upload(
                 file_name,
                 prof_pic.read(),
@@ -196,12 +193,25 @@ def profile(request):
             user.prof_path = public_url
             user.prof_extension = extension
             user.has_prof_pic = True    
-            updated = user.save()    
-            if updated is None:
+            user = user.save()    
+            if user is None:
                 messages.error(request,"some error occoured while saving public url")
                 return render(request,'users/profile.html',{'user':user})
             messages.success(request, "profile picture updated successfully")
             return render(request,'users/profile.html',{'user':user})
-                
+        elif 'reset_password' in request.POST:
+            otp = random.randint(100000,999999)
+            subject= f"Password reset for {user.email} Account"
+            message = f"Hi {user.username},\n\n"
+            message += "Hey user its nice to update your password once in a while. To reset your password, "
+            message += "please use the following OTP (One-Time Password):\n\n"
+            message += f"OTP: {otp}\n\n"
+            message += "Also enter the new password along with it.\n\n"
+            message += "This OTP will expire in 15 minutes.\n\n"
+            message += "If you didn't register on our website, please ignore this email.\n\n"
+            message += "Best regards,\nYour Website Team"
+            send_mail(subject,message,EMAIL_HOST_USER,[user.email],fail_silently=True)
+            messages.success(request,f"Email with otp of account {user.username} to email: {user.email}")
+            return render(request,'users/reset_password.html',{'otp':otp})
             
     return render(request, "users/profile.html",{'user':user})
