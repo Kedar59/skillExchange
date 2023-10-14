@@ -1,0 +1,24 @@
+{% extends 'plain.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/verify.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock css %}
+{% block content %}
+<div class="container">
+    
+    <form action="{% url 'reset_pass' %}" method="post">
+        <h2>OTP Verification</h2>
+        <p>Please enter the OTP sent to your email to verify your account:</p>
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" name="otp" required>
+        <input type="text" name="email" value="{{ email }}" hidden>
+        <input type="text" name="actual_otp" value="{{ otp }}" hidden>
+        <label for="password">Enter new password:</label>
+        <input type="password" id="password1" name="password1" required>
+        <label for="password">Confirm Confirm password:</label>
+        <input type="password" id="password2" name="password2" required>
+    </form>
+    
+</div>
+{% endblock content %}

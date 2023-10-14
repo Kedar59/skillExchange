@@ -1,0 +1,14 @@
+{% extends 'plain.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/verify.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock css %}
+{% block content %}
+<div class="container">
+    <form action="{% url 'reset_pass' %}" method="post">
+        <label for="otp">Enter your registered email:</label>
+        <input type="text" id="email" name="email" required>
+    </form>
+</div>
+{% endblock content %}

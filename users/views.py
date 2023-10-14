@@ -61,7 +61,56 @@ def is_valid_password(password):
         return validity
 def home(request):
     return render(request, "users/home.html")
-
+def reset_pass(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        actual_otp = request.POST['actual_otp']
+        otp = request.POST['otp']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if otp != actual_otp:
+            messages.error(request,"Invalid otp please try again")
+            return render(request,"users/get_email.html")
+        validity=is_valid_password(password1)
+        if validity['valid']!=True:
+            messages.error(request,validity['error'])
+            return render(request, 'users/get_email.html')
+        if password1!=password2:
+            messages.error(request,"Passwords dont match please try again")
+            return render(request,"users/get_email.html")
+        user = User.objects.get(email=email)
+        user.set_password(password1)
+        user.save()
+        messages.success(request,"Password reset successfully")
+        return render(request,"users/login.html")
+        
+    return render(request,"users/reset_pass.html")
+def get_email(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request,'Invalid email address. Please enter a valid email.')
+            return render(request, 'users/get_email.html')
+        if not email:
+            messages.error(request, 'Email field was empty.')
+            return render(request, 'users/get_email.html')
+        if not User.objects.filter(email=email).exists():
+            messages.error(request,f"User with email {email} dosent have a account on skillExchange")
+            return render(request, 'users/get_email.html')
+        otp = random.randint(100000,999999)
+        subject= f"Email Verification for {email} Account"
+        message += "Hello you are recieving this email to reset your password"
+        message += "please use the following OTP (One-Time Password):\n\n"
+        message += f"OTP: {otp}\n\n"
+        message += "This OTP will expire in 15 minutes.\n\n"
+        message += "If you didn't try to reset your password please forget it on our website, please ignore this email.\n\n"
+        message += "Best regards,\nYour Website Team"
+        send_mail(subject,message,EMAIL_HOST_USER,[email],fail_silently=True)
+        messages.success(request,f"Email with otp has been sent to : {email}")
+        return render(request,'users/reset_pass.html',{'otp':otp,'email':email})
+    return render(request,"users/get_email")
 def register(request):
     if request.method=='POST':
         username = request.POST['username']
