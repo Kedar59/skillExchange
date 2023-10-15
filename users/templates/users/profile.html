@@ -14,6 +14,11 @@
     <img src="{% static 'images/default-prof.jpg' %}" alt="not displayed" class="prof-img-display">
     {% else %}
     <img src="{{ user.prof_path }}" alt="" class="prof-img-display">
+    <form action="{% url 'profile' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="delete_prof_pic" hidden>
+        <button type="submit">Delete Profile picture</button>
+    </form>
     {% endif %}
     <button id="update-prof-pic-button">Update profile picture</button>
         <form id="update-prof-pic-form" method="post" enctype="multipart/form-data" action="{% url 'profile' %}" style="display: none;" id="profilePicInput">
@@ -21,7 +26,7 @@
             <input type="file" name="update_prof_pic" accept="images/*">
             <button type="submit">Submit</button>
         </form>
-        <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p>
+        <h3>Note profile pic size should be less than 250kb</h3>
     <h1>{{user.email}}</h1>
     <form id="update-password" method="post" action="{% url 'profile' %}">
         {% csrf_token %}

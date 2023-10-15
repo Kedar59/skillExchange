@@ -31,23 +31,4 @@ document.addEventListener('DOMContentLoaded', function () {
         updateProfPicForm.style.display = 'block';
         updateProfPicButton.style.display = 'none';
     });
-
-
-    // document.getElementById('profilePicInput').addEventListener('change', function () {
-    //     const profilePicInput = document.getElementById('profilePicInput');
-    //     const fileSizeError = document.getElementById('fileSizeError');
-    
-    //     if (profilePicInput.files.length > 0) {
-    //         const fileSize = profilePicInput.files[0].size; // Size in bytes
-    //         const maxSize = 250 * 1024; // 250KB in bytes
-    
-    //         if (fileSize > maxSize) {
-    //             fileSizeError.style.display = 'block';
-    //             profilePicInput.value = ''; // Clear the input to prevent upload
-    //         } else {
-    //             fileSizeError.style.display = 'none';
-    //         }
-    //     }
-    // });
-
 });

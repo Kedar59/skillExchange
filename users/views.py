@@ -2,15 +2,12 @@ from django.shortcuts import render, redirect
 from .models import *
 import re,random,os
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, get_user_model
 from django.contrib import messages
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 User = get_user_model()
-
-
 # for email verification
 from django.core.mail import send_mail
 from skillExchange.settings import EMAIL_HOST_USER
@@ -251,9 +248,20 @@ def profile(request):
             send_mail(subject,message,EMAIL_HOST_USER,[user.email],fail_silently=True)
             messages.success(request,f"Email with otp has been sent to : {user.email}")
             return render(request,'users/reset_pass.html',{'otp':otp,'email':user.email})
+        elif 'delete_prof_pic' in request.POST:
+            old_file_name: str = f"{user.username}.{user.prof_extension}"
+            storage_bucket: str = 'profile_picture'
+            response = supabase.storage.from_(storage_bucket).remove(old_file_name)
+            user.prof_path = None
+            user.prof_extension = None
+            user.has_prof_pic = False    
+            user = user.save()
+            return redirect(profile)
         elif 'update_prof_pic' in request.FILES:
-            print("I am here")
             prof_pic = request.FILES['update_prof_pic']
+            if prof_pic.size > 250 * 1024:
+                messages.error(request,"Your profie picture is more than 250kb try again")
+                return render(request,'users/profile.html',context)
             extension: str = prof_pic.name.split('.')[-1].lower()
 
             # Define the storage bucket name (replace with your actual bucket name)
