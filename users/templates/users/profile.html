@@ -22,6 +22,11 @@
         </form>
         <p id="fileSizeError" style="color: red; display: none;">File size exceeds the limit (250KB).</p>
     <h1>{{user.email}}</h1>
+    <form id="update-password" method="post" action="{% url 'profile' %}">
+        {% csrf_token %}
+        <input type="text" name="reset_password"  hidden>
+        <button type="submit">Update Password</button>
+    </form>
     <h1 id="first_name_hide">{{user.first_name}}</h1>
         <button id="update-first-name-button">Update First Name</button>
             <form id="update-first-name-form" method="post" action="{% url 'profile' %}" style="display: none;">

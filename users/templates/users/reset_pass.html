@@ -8,9 +8,11 @@
 <div class="container">
     
     <form action="{% url 'reset_pass' %}" method="post">
+        {% csrf_token %}
         <h2>OTP Verification</h2>
         <p>Please enter the OTP sent to your email to verify your account:</p>
         <label for="otp">Enter OTP:</label>
+        <h1>test otp : {{ otp }}</h1>
         <input type="text" id="otp" name="otp" required>
         <input type="text" name="email" value="{{ email }}" hidden>
         <input type="text" name="actual_otp" value="{{ otp }}" hidden>
@@ -18,7 +20,11 @@
         <input type="password" id="password1" name="password1" required>
         <label for="password">Confirm Confirm password:</label>
         <input type="password" id="password2" name="password2" required>
+        <button type="submit">Submit</button>
     </form>
-    
+    <ul>
+        <li>Password length should be at least 8 characters.</li>
+        <li>Password should contain at least one of the following special characters: @, #, $, %, ^, &, +, or =</li>
+    </ul>
 </div>
 {% endblock content %}

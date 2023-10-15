@@ -9,4 +9,5 @@ urlpatterns=[
     path("profile/",views.profile,name="profile"),
     path("verifyOTP",views.verifyOTP,name="verifyOTP"),
     path("reset_pass",views.reset_pass,name="reset_pass"),
+    path("get_email",views.get_email,name="get_email"),
 ]

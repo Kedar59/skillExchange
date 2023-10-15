@@ -6,9 +6,11 @@
 {% endblock css %}
 {% block content %}
 <div class="container">
-    <form action="{% url 'reset_pass' %}" method="post">
+    <form action="{% url 'get_email' %}" method="post">
+        {% csrf_token %}
         <label for="otp">Enter your registered email:</label>
         <input type="text" id="email" name="email" required>
+        <button type="submit">Confirm email</button>
     </form>
 </div>
 {% endblock content %}

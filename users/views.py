@@ -81,6 +81,7 @@ def reset_pass(request):
         user = User.objects.get(email=email)
         user.set_password(password1)
         user.save()
+        
         messages.success(request,"Password reset successfully")
         return render(request,"users/login.html")
         
@@ -101,7 +102,7 @@ def get_email(request):
             return render(request, 'users/get_email.html')
         otp = random.randint(100000,999999)
         subject= f"Email Verification for {email} Account"
-        message += "Hello you are recieving this email to reset your password"
+        message = "Hello you are recieving this email to reset your password"
         message += "please use the following OTP (One-Time Password):\n\n"
         message += f"OTP: {otp}\n\n"
         message += "This OTP will expire in 15 minutes.\n\n"
@@ -110,7 +111,8 @@ def get_email(request):
         send_mail(subject,message,EMAIL_HOST_USER,[email],fail_silently=True)
         messages.success(request,f"Email with otp has been sent to : {email}")
         return render(request,'users/reset_pass.html',{'otp':otp,'email':email})
-    return render(request,"users/get_email")
+    
+    return render(request,"users/get_email.html")
 def register(request):
     if request.method=='POST':
         username = request.POST['username']
@@ -216,6 +218,18 @@ def profile(request):
             
             messages.success(request, ' User Bio updated successfully ')
             return render(request, "users/profile.html" , {'user':user})
+        elif 'reset_password' in request.POST:
+            otp = random.randint(100000,999999)
+            subject= f"Email Verification for {user.email} Account"
+            message = "Hello you are recieving this email to reset your password"
+            message += "please use the following OTP (One-Time Password):\n\n"
+            message += f"OTP: {otp}\n\n"
+            message += "This OTP will expire in 15 minutes.\n\n"
+            message += "If you didn't try to reset your password please forget it on our website, please ignore this email.\n\n"
+            message += "Best regards,\nYour Website Team"
+            send_mail(subject,message,EMAIL_HOST_USER,[user.email],fail_silently=True)
+            messages.success(request,f"Email with otp has been sent to : {user.email}")
+            return render(request,'users/reset_pass.html',{'otp':otp,'email':user.email})
         elif 'update_prof_pic' in request.FILES:
             print("I am here")
             prof_pic = request.FILES['update_prof_pic']
