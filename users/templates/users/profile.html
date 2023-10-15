@@ -8,6 +8,7 @@
 {% endblock css %}
 {% block content %}
 {% if user.is_authenticated %}
+<div id="profile">
     <p>Welcome, {{ user.username }}!</p>
     {% if not user.has_prof_pic %}
     <img src="{% static 'images/default-prof.jpg' %}" alt="not displayed" class="prof-img-display">
@@ -49,6 +50,27 @@
                 <button type="submit">Submit</button>
             </form>
     <!-- Display other user information here as needed -->
+    <h1>Skills</h1>
+    <!-- Show all skills user has -->
+    <ul>
+        {% for skill in user_skills %}
+            <li> {{ skill.name }} </li>
+        {% endfor %}
+    </ul>
+    <h2>Add skills</h2>
+    <!-- Show all skills user dosent have  -->
+    <form action="{% url 'profile' %}" method="post">
+        <input type="text" name="add_skills_to_user" hidden>
+        {% csrf_token %}
+            {% for skill in skills_not_possessed %}
+                <div>
+                    <input type="checkbox" id="skill_{{ skill.id }}" name="skill_{{ skill.id }}" value="{{ skill.id }}">
+                    <label for="skill_{{ skill.id }}">{{ skill.name }}</label>  
+                </div>
+            {% endfor %}
+        <button type="submit">Add selected skills</button>
+    </form>
+</div>
 {% else %}
     <p>User is not logged in.</p>
     <!-- Display a message or login link for users who are not logged in -->

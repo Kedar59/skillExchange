@@ -184,6 +184,15 @@ def logout_view(request):
 @login_required
 def profile(request):
     user = request.user
+    user_skills = user.skills.all()
+    all_skills = Skill.objects.all()
+    skills_not_possessed = all_skills.difference(user_skills)
+    
+    context = {
+        'user': user,
+        'user_skills': user_skills,
+        'skills_not_possessed': skills_not_possessed,
+    }
     if request.method == 'POST':
         if 'update_first_name' in request.POST:
             new_first_name = request.POST['update_first_name']
@@ -192,10 +201,10 @@ def profile(request):
 
             if user.first_name != new_first_name:
                 messages.error(request, 'An error occurred while updating the first name. Please try again')
-                return render(request, "users/profile.html" , {'user':user})
+                return render(request, "users/profile.html" , context)
             
             messages.success(request, ' First name updated successfully ')
-            return render(request, "users/profile.html" , {'user':user})
+            return render(request, "users/profile.html" , context)
         elif 'update_last_name' in request.POST:
             new_last_name = request.POST['update_last_name']
             user.last_name = new_last_name
@@ -203,10 +212,10 @@ def profile(request):
 
             if user.last_name != new_last_name:
                 messages.error(request, 'An error occurred while updating the last name. Please try again')
-                return render(request, "users/profile.html" , {'user':user})
+                return render(request, "users/profile.html" , context)
             
             messages.success(request, ' Last name updated successfully ')
-            return render(request, "users/profile.html" , {'user':user})
+            return render(request, "users/profile.html" , context)
         elif 'update_userBio' in request.POST:
             new_userBio = request.POST['update_userBio']
             user.userBio = new_userBio
@@ -214,10 +223,10 @@ def profile(request):
 
             if user.userBio != new_userBio:
                 messages.error(request, 'An error occurred while updating the user Bio. Please try again')
-                return render(request, "users/profile.html" , {'user':user})
+                return render(request, "users/profile.html" , context)
             
             messages.success(request, ' User Bio updated successfully ')
-            return render(request, "users/profile.html" , {'user':user})
+            return render(request, "users/profile.html" , context)
         elif 'reset_password' in request.POST:
             otp = random.randint(100000,999999)
             subject= f"Email Verification for {user.email} Account"
@@ -251,7 +260,7 @@ def profile(request):
 
             if response.status_code != 200:
                 messages.error(request, f"{response.status_code}Something went wrong while saving profile picture")
-                return render(request,'users/profile.html',{'user':user})
+                return render(request,'users/profile.html',context)
             public_url: str = supabase.storage.from_(storage_bucket).get_public_url(file_name)
             user.prof_path = public_url
             user.prof_extension = extension
@@ -259,9 +268,9 @@ def profile(request):
             user = user.save()    
             if user is None:
                 messages.error(request,"some error occoured while saving public url")
-                return render(request,'users/profile.html',{'user':user})
+                return render(request,'users/profile.html',context)
             messages.success(request, "profile picture updated successfully")
-            return render(request,'users/profile.html',{'user':user})
+            return render(request,'users/profile.html',context)
         elif 'reset_password' in request.POST:
             otp = random.randint(100000,999999)
             subject= f"Password reset for {user.email} Account"
@@ -277,4 +286,4 @@ def profile(request):
             messages.success(request,f"Email with otp of account {user.username} to email: {user.email}")
             return render(request,'users/reset_password.html',{'otp':otp})
             
-    return render(request, "users/profile.html",{'user':user})
+    return render(request, "users/profile.html",context)
