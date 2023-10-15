@@ -216,6 +216,18 @@ def profile(request):
             
             messages.success(request, ' Last name updated successfully ')
             return render(request, "users/profile.html" , context)
+        elif 'delete_skills_to_user' in request.POST:
+            delete_skill_ids = request.POST.getlist("delete_skills")
+            skills_to_delete = Skill.objects.filter(id__in=delete_skill_ids)
+            user.skills.remove(*skills_to_delete)
+            user.save()
+            return redirect(profile)
+        elif 'add_skills_to_user' in request.POST:
+            selected_skill_ids = request.POST.getlist("selected_skills")
+            selected_skills = Skill.objects.filter(id__in=selected_skill_ids)
+            user.skills.add(*selected_skills)
+            user.save()
+            return redirect(profile)
         elif 'update_userBio' in request.POST:
             new_userBio = request.POST['update_userBio']
             user.userBio = new_userBio
@@ -271,19 +283,5 @@ def profile(request):
                 return render(request,'users/profile.html',context)
             messages.success(request, "profile picture updated successfully")
             return render(request,'users/profile.html',context)
-        elif 'reset_password' in request.POST:
-            otp = random.randint(100000,999999)
-            subject= f"Password reset for {user.email} Account"
-            message = f"Hi {user.username},\n\n"
-            message += "Hey user its nice to update your password once in a while. To reset your password, "
-            message += "please use the following OTP (One-Time Password):\n\n"
-            message += f"OTP: {otp}\n\n"
-            message += "Also enter the new password along with it.\n\n"
-            message += "This OTP will expire in 15 minutes.\n\n"
-            message += "If you didn't register on our website, please ignore this email.\n\n"
-            message += "Best regards,\nYour Website Team"
-            send_mail(subject,message,EMAIL_HOST_USER,[user.email],fail_silently=True)
-            messages.success(request,f"Email with otp of account {user.username} to email: {user.email}")
-            return render(request,'users/reset_password.html',{'otp':otp})
             
     return render(request, "users/profile.html",context)

@@ -95,7 +95,7 @@ li {
 
 /* CHECKBOX HACK */
 
-input[type="checkbox"] {
+#checkbox_toggle {
   display: none;
 }
 
