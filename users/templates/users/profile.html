@@ -64,7 +64,8 @@
             {% for skill in user_skills %}
                 <li>
                     <input type="checkbox" id="skill_{{ skill.id }}" name="delete_skills" value="{{ skill.id }}">
-                    <label for="skill_{{ skill.id }}">{{ skill.name }}</label>  
+                    <label for="skill_{{ skill.id }}">{{ skill.name }}</label>
+                    <form action=""></form>  
                 </li>
             {% endfor %}
         </ul>
