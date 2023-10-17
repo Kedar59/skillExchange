@@ -184,14 +184,82 @@ def profile(request):
     user_skills = user.skills.all()
     all_skills = Skill.objects.all()
     skills_not_possessed = all_skills.difference(user_skills)
-    
+    credential_links = {}  # Initialize an empty dictionary
+
+    for skill in user_skills:
+        skill_id = skill.id
+        credential = Credential.objects.filter(user=user, skill=skill).first()  # Use .first() to get a single credential
+        if credential:
+            links = credential.links
+            credential_links[skill_id] = [{
+                'linkName': link.get('linkName'),
+                'linkValue': link.get('linkValue')
+            } for link in links]
+        else:
+            credential_links[skill_id] = []  # No credentials for this skill
+    print(credential_links)
     context = {
         'user': user,
         'user_skills': user_skills,
         'skills_not_possessed': skills_not_possessed,
+        'credential_links': credential_links,
     }
+    
     if request.method == 'POST':
-        if 'update_first_name' in request.POST:
+        if 'delete_credential' in request.POST:
+            link_name = request.POST['link_name']
+            skill_id = request.POST['skill_id']
+            try:
+                # Find the skill and credential associated with the skill and user
+                skill = Skill.objects.get(id=skill_id)
+                credential = Credential.objects.get(user=user, skill=skill)
+
+                # Retrieve the list of links
+                links = credential.links
+
+                # Find the index of the link with the specified link_name
+                link_index = None
+                for i, link in enumerate(links):
+                    if link.get('link_name') == link_name:
+                        link_index = i
+                        break
+                # If the link is found, remove it from the list
+                if link_index is not None:
+                    del links[link_index]
+                    credential.links = links  # Update the links list in the credential
+                    credential.save() # Redirect to the user's profile
+                    return redirect(profile)
+            except (Skill.DoesNotExist, Credential.DoesNotExist):
+                # Handle exceptions, e.g., skill or credential not found
+                return render(request, 'error.html', {'message': 'Skill or credential not found'})
+        elif 'add_credential' in request.POST:
+            link_name = request.POST['link_name']
+            link = request.POST['link']
+            skill_id = request.POST['skill_id']
+            skill = Skill.objects.get(id=skill_id)
+            credential = Credential.objects.filter(user=user, skill=skill).first()
+            if credential:
+                # Get the existing links
+                links = credential.links
+            else:
+                # Create a new credential if it doesn't exist
+                credential = Credential.objects.create(user=user, skill=skill)
+                links = []
+
+            # Create a new JSON object
+            new_link = {
+                'linkName': link_name,
+                'linkValue': link,
+            }
+
+            # Append the new link to the list
+            links.append(new_link)
+
+            # Update the credential's links
+            credential.links = links
+            credential.save()
+            return redirect(profile)
+        elif 'update_first_name' in request.POST:
             new_first_name = request.POST['update_first_name']
             user.first_name = new_first_name
             user.save()
