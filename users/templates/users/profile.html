@@ -65,7 +65,7 @@
                 <li>
                     <form action="{% url 'profile' %}" method="post">
                         {% csrf_token %}
-                        <input type="text" name="delete_skills_to_user" hidden>
+                        <input type="text" name="delete_skill_to_user" hidden>
                         <input type="text" id="skill_{{ skill.id }}" name="delete_skill" value="{{ skill.id }}" hidden>
                         <label for="skill_{{ skill.id }}">{{ skill.name }}</label>
                         <button type="submit">Delete this skill</button>

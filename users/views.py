@@ -216,11 +216,10 @@ def profile(request):
 
                 # Retrieve the list of links
                 links = credential.links
-
                 # Find the index of the link with the specified link_name
                 link_index = None
                 for i, link in enumerate(links):
-                    if link.get('link_name') == link_name:
+                    if link.get('linkName') == link_name:
                         link_index = i
                         break
                 # If the link is found, remove it from the list
@@ -281,10 +280,11 @@ def profile(request):
             
             messages.success(request, ' Last name updated successfully ')
             return render(request, "users/profile.html" , context)
-        elif 'delete_skills_to_user' in request.POST:
-            delete_skill_ids = request.POST.getlist("delete_skills")
-            skills_to_delete = Skill.objects.filter(id__in=delete_skill_ids)
-            user.skills.remove(*skills_to_delete)
+        elif 'delete_skill_to_user' in request.POST:
+            delete_skill_id = request.POST['delete_skill']
+            user.skills.remove(delete_skill_id)
+            # Delete the corresponding credentials for that user-skill pair
+            Credential.objects.filter(user=user, skill_id=delete_skill_id).delete()
             user.save()
             return redirect(profile)
         elif 'add_skills_to_user' in request.POST:
