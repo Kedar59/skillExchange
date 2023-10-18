@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/findMatch.css' %}">
+{% endblock css %}
+{% block content %}
+    <p>{{ prof.username }}</p>
+    <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
+    <p>{{ prof.userBio }}</p>
+    {% for skill in prof_skills %}
+        <li> {{ skill.name }} </li>
+                <ul>
+                    {% with links=credential_links|get_dict_value:skill.id %}
+                    {% if links %}
+                        <li>
+                            {% for link in links %}
+                                <a href="{{ link.linkValue }}" target="_blank">{{ link.linkName }}</a>
+                            {% endfor %}
+                        </li>
+                    {% else %}
+                        <li>No credentials for this skill.</li>
+                    {% endif %}
+                    {% endwith %}
+                </ul>
+    {% endfor %}
+{% endblock content %}

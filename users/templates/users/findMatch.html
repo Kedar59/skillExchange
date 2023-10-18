@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/findMatch.css' %}">
+{% endblock css %}
+{% block content %}
+{% if searched %}
+<form action="{% url 'home' %}" method="post">
+    {% csrf_token %}
+    <label for="skill">What skill would you like to learn today : </label>
+    <input type="text" name="choose_skill" hidden>
+    <input type="text" placeholder="Search here ... " name="choosen_skill" id="skill" list="skills" >
+    <datalist id="skills">
+        {% for skill in skills %}
+            <option value="{{ skill.name }}">
+        {% endfor %}
+    </datalist>
+    <button type="submit">Search</button>
+</form>
+    {% for prof in user_list %}
+        <a href="{% url 'user_profile' prof.username %}">
+            <div class="prof-row">
+                <p>{{ prof.username }}</p>
+                <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
+                <p>{{ prof.userBio }}</p>
+                <ul>
+                    {% with links=credential_links|get_dict_value:prof.id %}
+                        <li>
+                            {% for link in links %}
+                                <a href="{{ link.linkValue }}">{{ link.linkName }}</a>
+                            {% endfor %}
+                        </li>
+                    {% endwith %}
+                </ul>
+            </div>
+        </a><hr>
+    {% endfor %}
+{% else %}
+<form action="{% url 'home' %}" method="post">
+    {% csrf_token %}
+    <label for="skill">What skill would you like to learn today : </label>
+    <input type="text" name="choose_skill" hidden>
+    <input type="text" placeholder="Search here ... " name="choosen_skill" id="skill" list="skills" >
+    <datalist id="skills">
+        {% for skill in skills %}
+            <option value="{{ skill.name }}">
+        {% endfor %}
+    </datalist>
+    <button type="submit">Search</button>
+</form>
+{% endif %}
+{% endblock content %}

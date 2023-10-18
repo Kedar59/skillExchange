@@ -58,8 +58,76 @@ def is_valid_password(password):
         return validity
 def findMatch(request):
     user = request.user
-   
-
+    skill_id = request.session.get('searched_skill_id')
+    all_skills = Skill.objects.all()
+    context = {
+        'user_list':None,
+        'skills':all_skills
+    }
+    if skill_id:
+        context['searched'] = True
+        if request.method == 'POST':
+            if 'search' in request.POST:
+                skill_name = request.POST['skill_name']
+                skill = Skill.objects.get(name=skill_name)
+                request.session['searched_skill_id'] = skill.id
+                user_list = users_with_skill = CustomUser.objects.filter(credential__skill=skill)
+                credential_links = {}
+                for prof in user_list:
+                    prof_id = prof.id
+                    credential = Credential.objects.filter(user=prof, skill=skill).first()  # Use .first() to get a single credential
+                    if credential:
+                        links = credential.links
+                        credential_links[prof_id] = [{
+                        'linkName': link.get('linkName'),
+                        'linkValue': link.get('linkValue')
+                        } for link in links]
+                context['credential_links']=credential_links
+                context['user_list'] = user_list
+                context['skill_id'] = skill.id
+                return render(request, "users/findMatch.html",context)
+        else:
+            skill = Skill.objects.get(id=skill_id)
+            user_list = User.objects.filter(credential__skill=skill)
+            credential_links = {}
+            for prof in user_list:
+                    prof_id = prof.id
+                    credential = Credential.objects.filter(user=prof, skill=skill).first()  # Use .first() to get a single credential
+                    if credential:
+                        links = credential.links
+                        credential_links[prof_id] = [{
+                        'linkName': link.get('linkName'),
+                        'linkValue': link.get('linkValue')
+                        } for link in links]
+            context['user_list'] = user_list
+            context['credential_links']=credential_links
+            context['skill_id'] = skill.id
+            return render(request, "users/findMatch.html",context)
+    else:
+        context['searched'] = False
+    return render(request,"users/findMatch.html",context)
+def user_profile(request , username):
+    user = request.user
+    prof = User.objects.get(username=username)
+    prof_skills = prof.skills.all()
+    credential_links = {}
+    for skill in prof_skills:
+        skill_id = skill.id
+        credential = Credential.objects.filter(user=prof, skill=skill).first()  # Use .first() to get a single credential
+        if credential:
+            links = credential.links
+            credential_links[skill_id] = [{
+                'linkName': link.get('linkName'),
+                'linkValue': link.get('linkValue')
+            } for link in links]
+        else:
+            credential_links[skill_id] = []  # No credentials for this skill
+    context = { 
+        'prof' : prof,
+        'prof_skills' : prof_skills,
+        'credential_links' : credential_links
+    }
+    return render(request,"users/user_profile.html",context)
 def home(request):
     user = request.user
     all_skills = Skill.objects.all()
@@ -74,7 +142,10 @@ def home(request):
     if request.method=='POST':
         if 'choose_skill' in request.POST:
             skill_name = request.POST['choosen_skill']
-            
+            skill = Skill.objects.get(name=skill_name)
+            print(skill)
+            request.session['searched_skill_id'] = skill.id
+            return redirect(findMatch)    
     return render(request, "users/home.html", context)
 def reset_pass(request):
     if request.method == 'POST':
