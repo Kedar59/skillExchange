@@ -12,5 +12,16 @@
     <p>User is not logged in.</p>
     <!-- Display a message or login link for users who are not logged in -->
 {% endif %}
-<script src="{% static 'js/home.js' %}"></script>
+<form action="{% url 'home' %}" method="post">
+    {% csrf_token %}
+    <label for="skill">Choose your Skill</label>
+    <input type="text" name="choose_skill" hidden>
+    <input type="text" placeholder="Search here ... " name="choosen_skill" id="skill" list="skills" >
+    <datalist id="skills">
+        {% for skill in skills %}
+            <option value="{{ skill.name }}">
+        {% endfor %}
+    </datalist>
+    <button type="submit">Search</button>
+</form>
 {% endblock content %}

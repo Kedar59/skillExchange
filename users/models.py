@@ -14,6 +14,7 @@ class CustomUser(AbstractUser):
     has_prof_pic=models.BooleanField(default=False)
     prof_extension=models.CharField(max_length=15,null=True,blank=True)
     skills = models.ManyToManyField(Skill, blank=True)
+    credebility_score = models.IntegerField(default=0)
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['username']

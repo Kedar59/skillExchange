@@ -56,8 +56,26 @@ def is_valid_password(password):
         validity['valid']=False
         validity['error']="Must contain a special character like @,#,$,%,^,&,+ or = and must not contain spaces."
         return validity
+def findMatch(request):
+    user = request.user
+   
+
 def home(request):
-    return render(request, "users/home.html")
+    user = request.user
+    all_skills = Skill.objects.all()
+    context = {
+        'skills':all_skills
+    }
+    if user.is_authenticated:
+        user_credentials = Credential.objects.filter(user=user)
+        credential_count = user_credentials.count()
+        user.credebility_score = credential_count
+        user.save()
+    if request.method=='POST':
+        if 'choose_skill' in request.POST:
+            skill_name = request.POST['choosen_skill']
+            
+    return render(request, "users/home.html", context)
 def reset_pass(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -185,7 +203,12 @@ def profile(request):
     all_skills = Skill.objects.all()
     skills_not_possessed = all_skills.difference(user_skills)
     credential_links = {}  # Initialize an empty dictionary
-
+    user_credentials = Credential.objects.filter(user=user)
+    # Count the number of credentials for the logged-in user
+    credential_count = user_credentials.count()
+    # Update the credebility_score for the logged-in user
+    user.credebility_score = credential_count
+    user.save()
     for skill in user_skills:
         skill_id = skill.id
         credential = Credential.objects.filter(user=user, skill=skill).first()  # Use .first() to get a single credential
@@ -354,9 +377,6 @@ def profile(request):
             user.prof_extension = extension
             user.has_prof_pic = True    
             user = user.save()    
-            if user is None:
-                messages.error(request,"some error occoured while saving public url")
-                return render(request,'users/profile.html',context)
             messages.success(request, "profile picture updated successfully")
             return render(request,'users/profile.html',context)
             
