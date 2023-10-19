@@ -9,12 +9,16 @@
     <p>{{ prof.username }}</p>
     <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
     <p>{{ prof.userBio }}</p>
-    <form action="{% url 'user_profile' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="contact" hidden>
-        <input type="text" name="sender_email" hidden>
-        <button type="submit">Contact</button>
-    </form>
+    {% if user.is_authenticated %}
+        {% if user.credebility_score %}
+            <form action="{% url 'user_profile' prof.username %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="contact" hidden>
+                <input type="text" name="sender_email" value="{{ user.email }}" hidden>
+                <button type="submit">Contact</button>
+            </form>
+        {% endif %}
+    {% endif %}
     {% for skill in prof_skills %}
         <li> {{ skill.name }} </li>
                 <ul>
