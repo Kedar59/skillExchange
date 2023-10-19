@@ -7,6 +7,7 @@ from django.contrib.auth import login, authenticate, logout, get_user_model
 from django.contrib import messages
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 User = get_user_model()
 # for email verification
 from django.core.mail import send_mail
@@ -127,6 +128,16 @@ def user_profile(request , username):
         'prof_skills' : prof_skills,
         'credential_links' : credential_links
     }
+
+    if 'contact' in request.POST:
+        sender_email = request.POST['sender_email']
+        sender_user = User.objects.get(email=sender_email)
+        user_profile_url = request.build_absolute_uri(reverse('user_profile', args=[sender_user.username]))
+        subject= "Someone wants to learn a skill from you"
+        message = f"Hello you are recieving this email as {sender_user.username} wants to contact you"
+        message += f"To respond you can send a email at {sender_email}"
+        message += f"If you are intrested to learn a skil from them see their profile here : {user_profile_url}"
+        send_mail(subject,message,EMAIL_HOST_USER,[prof.email],fail_silently=True)
     return render(request,"users/user_profile.html",context)
 def home(request):
     user = request.user

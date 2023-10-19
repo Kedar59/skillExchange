@@ -3,12 +3,18 @@
 {% load custom_filters %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-<link rel="stylesheet" href="{% static 'css/findMatch.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
 {% endblock css %}
 {% block content %}
     <p>{{ prof.username }}</p>
     <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
     <p>{{ prof.userBio }}</p>
+    <form action="{% url 'user_profile' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="contact" hidden>
+        <input type="text" name="sender_email" hidden>
+        <button type="submit">Contact</button>
+    </form>
     {% for skill in prof_skills %}
         <li> {{ skill.name }} </li>
                 <ul>
