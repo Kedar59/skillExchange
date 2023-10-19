@@ -133,7 +133,7 @@ def user_profile(request , username):
             sender_email = request.POST['sender_email']
             sender_user = User.objects.get(email=sender_email)
             user_profile_url = request.build_absolute_uri(reverse('user_profile', args=[sender_user.username]))
-            subject= "Someone wants to learn a skill from you\n"
+            subject= "Someone wants to learn a skill from you"
             message = f"Hello you are recieving this email as {sender_user.username} wants to contact you\n"
             message += f"To respond you can send a email at {sender_email}\n"
             message += f"If you are intrested to learn a skil from them see their profile here : {user_profile_url}\n"
