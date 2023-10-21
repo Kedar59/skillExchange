@@ -11,12 +11,16 @@
     <p>{{ prof.userBio }}</p>
     {% if user.is_authenticated %}
         {% if user.credebility_score %}
+            {% if req_sent %}
+            <p>{{ req_sent_message }}</p>
+            {% else %}
             <form action="{% url 'user_profile' prof.username %}" method="post">
                 {% csrf_token %}
                 <input type="text" name="contact" hidden>
                 <input type="text" name="sender_email" value="{{ user.email }}" hidden>
                 <button type="submit">Contact</button>
             </form>
+            {% endif %}
         {% endif %}
     {% endif %}
     {% for skill in prof_skills %}

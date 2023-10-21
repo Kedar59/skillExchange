@@ -123,10 +123,24 @@ def user_profile(request , username):
             } for link in links]
         else:
             credential_links[skill_id] = []  # No credentials for this skill
+    req_sent_user_to_prof = Connection.objects.filter(sender=user, receiver=prof, is_accepted=False).exists()
+    req_sent_prof_to_user = Connection.objects.filter(sender=prof, receiver=user, is_accepted=False).exists()
+
+    req_sent = False
+    req_sent_message = None
+
+    if req_sent_user_to_prof:
+        req_sent_message = f"You have already sent a request to {prof.username}."
+        req_sent = True
+    elif req_sent_prof_to_user:
+        req_sent = True
+        req_sent_message = f"{prof.username} has sent you a request. Check your notifications."
     context = { 
         'prof' : prof,
         'prof_skills' : prof_skills,
-        'credential_links' : credential_links
+        'credential_links' : credential_links,
+        'req_sent':req_sent,
+        'req_sent_message':req_sent_message
     }
     if request.method == 'POST':
         if 'contact' in request.POST:
@@ -138,6 +152,9 @@ def user_profile(request , username):
             message += f"To respond you can send a email at {sender_email}\n"
             message += f"If you are intrested to learn a skil from them see their profile here : {user_profile_url}\n"
             send_mail(subject,message,EMAIL_HOST_USER,[prof.email],fail_silently=True)
+            # add code here to add the current 'user' 'prof' pair to Connections table 
+            connection = Connection(sender=user, receiver=prof)
+            connection.save()
     return render(request,"users/user_profile.html",context)
 def home(request):
     user = request.user
