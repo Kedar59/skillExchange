@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/connections.css' %}">
+{% endblock css %}
+{% block content %}
+<h1>Connected</h1>
+<div class="container">
+    {% for prof in connected %}
+    <div class="prof-card">
+        <a href="{% url 'user_profile' prof.username %}">
+            <p>{{ prof.username }}</p>
+            <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
+            <p>{{ prof.userBio }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+<h1>Requests</h1>
+<div class="container">
+    
+    {% for prof in con_recieved %}
+    <div class="prof-card">
+        <a href="{% url 'user_profile' prof.username %}">
+            <p>{{ prof.username }}</p>
+            <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
+            <p>{{ prof.userBio }}</p>
+        </a>
+        <form action="{% url 'connections' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="connect" hidden>
+            <input type="text" name="user_id" value="{{ prof.id }}" hidden>
+            <button type="submit">Accept</button>
+        </form>
+        <form action="{% url 'connections' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="decline" hidden>
+            <input type="text" name="user_id" value="{{ prof.id }}" hidden>
+            <button type="submit">Reject</button>
+        </form>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock content %}

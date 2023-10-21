@@ -17,6 +17,7 @@
         <!-- NAVIGATION MENUS -->
         <div class="menu">
           {% if user.is_authenticated %}
+          <li><a href="{% url 'connections' %}">Connections</a></li>
           <li><a href="{% url 'profile' %}">Profile</a></li>
           <li><a href="{% url 'logout_view' %}">Logout</a></li>
           {% else %}

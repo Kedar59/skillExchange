@@ -1,0 +1,41 @@
+body {
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+form button {
+  background-color: #f2d600;
+  color: #333;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+.prof-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.prof-card:hover {
+  transform: scale(1.02); /* Add a subtle hover effect */
+}
+
+.prof-card p {
+  color: #333;
+  font-size: 18px;
+}

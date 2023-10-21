@@ -12,4 +12,5 @@ urlpatterns=[
     path("get_email",views.get_email,name="get_email"),
     path("findMatch",views.findMatch,name="findMatch"),
     path("user_profile/<str:username>/",views.user_profile,name="user_profile"),
+    path("connections",views.conections,name="connections"),
 ]

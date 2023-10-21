@@ -158,6 +158,33 @@ def user_profile(request , username):
         'req_sent_message':req_sent_message
     }
     return render(request,"users/user_profile.html",context)
+@login_required
+def conections(request):
+    user = request.user
+    if request.method =='POST':
+        if 'connect' in request.POST:
+            userId = request.POST['user_id']
+            prof = User.objects.get(id=userId)
+            connection = Connection.objects.get(sender=prof, receiver=user, is_accepted=False)
+            connection.is_accepted = True
+            connection.save()
+        elif 'decline' in request.POST:
+            userId = request.POST['user_id']
+            prof = User.objects.get(id=userId)
+            connection = Connection.objects.get(sender=prof, receiver=user, is_accepted=False)
+            connection.delete()
+    connected_senders = Connection.objects.filter(is_accepted=True, sender=user).values_list('receiver', flat=True)
+    connected_receivers = Connection.objects.filter(is_accepted=True, receiver=user).values_list('sender', flat=True)
+    connected_users = User.objects.filter(id__in=list(connected_senders) + list(connected_receivers)).distinct()
+
+    connection_requests = Connection.objects.filter(receiver=user, is_accepted=False).values_list('sender', flat=True)
+    con_received_users = User.objects.filter(id__in=connection_requests)
+
+    context = {
+        'connected' : connected_users,
+        'con_recieved': con_received_users,
+    }
+    return render(request,"users/connections.html",context)
 def home(request):
     user = request.user
     all_skills = Skill.objects.all()
