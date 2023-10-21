@@ -27,3 +27,9 @@ class Credential(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s {self.skill.name} Credential"
+    
+class Connection(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_connections')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_connections')
+    is_accepted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
