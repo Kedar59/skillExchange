@@ -6,22 +6,30 @@
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock css %}
 {% block content %}
+<header>
+    
+    <h1>Welcome to SkillXchange</h1>
+    <h2>SkillXchange is your destination for learning from peers and teaching your skills to others. Join our community, explore diverse subjects, and share your expertise with like-minded individuals. Start your journey of skill-sharing and personal growth on SkillXchange today.</h2>
+</header>
+
 {% if user.is_authenticated %}
-    <h1>User logged in success</h1>
+    <h1>User logged in successfully</h1>
 {% else %}
     <p>User is not logged in.</p>
     <!-- Display a message or login link for users who are not logged in -->
 {% endif %}
+
 <form action="{% url 'home' %}" method="post">
     {% csrf_token %}
-    <label for="skill">What skill would you like to learn today : </label>
+    <label for="skill">What skill would you like to learn today:</label>
     <input type="text" name="choose_skill" hidden>
-    <input type="text" placeholder="Search here ... " name="choosen_skill" id="skill" list="skills" >
+    <input type="text" placeholder="Search here..." name="choosen_skill" id="skill" list="skills">
     <datalist id="skills">
         {% for skill in skills %}
-            <option value="{{ skill.name }}" >
+            <option value="{{ skill.name }}">
         {% endfor %}
     </datalist>
     <button type="submit">Search</button>
 </form>
+
 {% endblock content %}
