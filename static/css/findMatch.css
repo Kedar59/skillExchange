@@ -1,95 +1,110 @@
 /* Styling for the search form container */
+body {
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 form {
-    background: linear-gradient(to bottom, #f2d600, #f0f0f0); /* Gradient background */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px; /* Adjust the maximum width as needed */
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  /* Styling for labels */
-  label {
-    display: block;
-    font-size: 18px;
-    color: #333;
-  }
-  
-  /* Styling for the skill search input */
-  input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333; /* Text color for input fields */
-  }
-  
-  /* Styling for the "Search" button */
-  form button {
-    background-color: #f2d600;
-    color: #333;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    margin-top: 20px;
-    transition: background-color 0.3s;
-  }
-  
-  form button:hover {
-    background-color: #4c9e9e; /* Greyish-blue color on hover */
-  }
-  
-  /* Styling for the user profiles */
-  a {
-    text-decoration: none;
-    color: #333; /* Text color for profile links */
-  }
-  
-  /* Styling for the user profile cards */
-.prof-row {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    margin: 20px;
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .prof-row:hover {
-    transform: scale(1.02); /* Add a subtle hover effect */
-  }
-  
-  .prof-row p {
-    color: #333;
-    font-size: 18px;
-  }
-  
-  .prof-img-display {
-    max-width: 100px;
-    height: auto;
-    border-radius: 50%;
-  }
-  
-  .prof-row ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .prof-row li a {
-    color: #f2d600;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .prof-row li a:hover {
-    color: #4c9e9e; /* Greyish-blue color on hover */
-  }
-  
-  
+  background: linear-gradient(
+    to bottom,
+    #f2d600,
+    #f0f0f0
+  ); /* Gradient background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px; /* Adjust the maximum width as needed */
+  margin: 20px auto 20px auto;
+  text-align: center;
+}
+
+/* Styling for labels */
+label {
+  display: block;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Styling for the skill search input */
+input[type="text"] {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333; /* Text color for input fields */
+}
+
+/* Styling for the "Search" button */
+form button {
+  background-color: #f2d600;
+  color: #333;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #4c9e9e; /* Greyish-blue color on hover */
+}
+
+/* Styling for the user profiles */
+a {
+  text-decoration: none;
+  color: #333; /* Text color for profile links */
+}
+
+/* Styling for the user profile cards */
+.container{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.prof-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.prof-card:hover {
+  transform: scale(1.02); /* Add a subtle hover effect */
+}
+
+.prof-card p {
+  color: #333;
+  font-size: 18px;
+}
+.creds{
+  list-style: none;
+}
+.prof-img-display {
+  max-width: 100px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.prof-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.prof-card li a {
+  color: #f2d600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.prof-card li a:hover {
+  color: #4c9e9e; /* Greyish-blue color on hover */
+}

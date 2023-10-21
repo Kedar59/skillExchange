@@ -61,15 +61,6 @@ label {
   margin-bottom: 20px;
   font-size: 20px;
 }
-
-input[type="text"] {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #f2d600;
-  border-radius: 5px;
-  font-size: 18px;
-}
-
 /* Additional styling for the form button */
 button {
   background-color: #f2d600;
@@ -89,7 +80,7 @@ button:hover {
 
 /* Style the input field and add space */
 input[type="text"] {
-  width: 100%;
+  width: 70%;
   padding: 15px;
   border: 2px solid #f2d600;
   border-radius: 5px;

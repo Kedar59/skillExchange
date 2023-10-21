@@ -11,7 +11,7 @@
     {% csrf_token %}
     <label for="skill">What skill would you like to learn today : </label>
     <input type="text" name="choose_skill" hidden>
-    <input type="text" placeholder="Search here ... " name="choosen_skill" id="skill" list="skills" >
+    <input type="text" placeholder="Search here ... " name="choosen_skill" id="skill" list="skills" class="choose-skill">
     <datalist id="skills">
         {% for skill in skills %}
             <option value="{{ skill.name }}">
@@ -19,13 +19,15 @@
     </datalist>
     <button type="submit">Search</button>
 </form>
+<div class="container">
     {% for prof in user_list %}
-        <a href="{% url 'user_profile' prof.username %}">
-            <div class="prof-row">
+        
+        <div class="prof-card">
+            <a href="{% url 'user_profile' prof.username %}">
                 <p>{{ prof.username }}</p>
                 <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
                 <p>{{ prof.userBio }}</p>
-                <ul>
+                <ul class="creds">
                     {% with links=credential_links|get_dict_value:prof.id %}
                         <li>
                             {% for link in links %}
@@ -34,9 +36,10 @@
                         </li>
                     {% endwith %}
                 </ul>
-            </div>
-        </a><hr>
+            </a>
+        </div>
     {% endfor %}
+</div>
 {% else %}
 <form action="{% url 'home' %}" method="post">
     {% csrf_token %}

@@ -22,9 +22,11 @@
             </form>
             {% endif %}
         {% endif %}
+    {% else %}
+    <p>Login to send a connection request</p>
     {% endif %}
     {% for skill in prof_skills %}
-        <li> {{ skill.name }} </li>
+        <p> {{ skill.name }} </p>
                 <ul>
                     {% with links=credential_links|get_dict_value:skill.id %}
                     {% if links %}
