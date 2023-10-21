@@ -6,39 +6,45 @@
 <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
 {% endblock css %}
 {% block content %}
-    <p>{{ prof.username }}</p>
-    <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
-    <p>{{ prof.userBio }}</p>
-    {% if user.is_authenticated %}
-        {% if user.credebility_score %}
-            {% if req_sent %}
-            <p>{{ req_sent_message }}</p>
-            {% else %}
-            <form action="{% url 'user_profile' prof.username %}" method="post">
-                {% csrf_token %}
-                <input type="text" name="contact" hidden>
-                <input type="text" name="sender_email" value="{{ user.email }}" hidden>
-                <button type="submit">Contact</button>
-            </form>
+<div class="prof-section">
+    <div class="col">
+        <p>Username : {{ prof.username }}</p>
+        <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
+        <p class="about-me">About Me : {{ prof.userBio }}</p>
+        {% if user.is_authenticated %}
+            {% if user.credebility_score %}
+                {% if req_sent %}
+                <p>{{ req_sent_message }}</p>
+                {% else %}
+                <form action="{% url 'user_profile' prof.username %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="contact" hidden>
+                    <input type="text" name="sender_email" value="{{ user.email }}" hidden>
+                    <button type="submit" class="contact">Contact</button>
+                </form>
+                {% endif %}
             {% endif %}
+        {% else %}
+        <p>Login to send a connection request</p>
         {% endif %}
-    {% else %}
-    <p>Login to send a connection request</p>
-    {% endif %}
-    {% for skill in prof_skills %}
-        <p> {{ skill.name }} </p>
-                <ul>
-                    {% with links=credential_links|get_dict_value:skill.id %}
-                    {% if links %}
-                        <li>
-                            {% for link in links %}
-                                <a href="{{ link.linkValue }}" target="_blank">{{ link.linkName }}</a>
-                            {% endfor %}
-                        </li>
-                    {% else %}
-                        <li>No credentials for this skill.</li>
-                    {% endif %}
-                    {% endwith %}
-                </ul>
-    {% endfor %}
+    </div>
+    <div class="col">
+        {% for skill in prof_skills %}
+            <p> {{ skill.name }} </p>
+                    <ul>
+                        {% with links=credential_links|get_dict_value:skill.id %}
+                        {% if links %}
+                            <li>
+                                {% for link in links %}
+                                    <a href="{{ link.linkValue }}" target="_blank">{{ link.linkName }}</a>
+                                {% endfor %}
+                            </li>
+                        {% else %}
+                            <li>No credentials for this skill.</li>
+                        {% endif %}
+                        {% endwith %}
+                    </ul>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}

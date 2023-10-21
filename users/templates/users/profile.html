@@ -5,125 +5,123 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
 <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock css %}
 {% block content %}
 {% if user.is_authenticated %}
-<div id="profile">
-    <p>Welcome, {{ user.username }}!</p>
-    {% if not user.has_prof_pic %}
-    <img src="{% static 'images/default-prof.jpg' %}" alt="not displayed" class="prof-img-display">
-    {% else %}
-    <img src="{{ user.prof_path }}" alt="" class="prof-img-display">
-    <form action="{% url 'profile' %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="delete_prof_pic" hidden>
-        <button type="submit">Delete Profile picture</button>
-    </form>
-    {% endif %}
-    <button id="update-prof-pic-button">Update profile picture</button>
-        <form id="update-prof-pic-form" method="post" enctype="multipart/form-data" action="{% url 'profile' %}" style="display: none;" id="profilePicInput">
+<div class="container">
+    <div class="col">
+        <p>Welcome, {{ user.username }}!</p>
+        {% if not user.has_prof_pic %}
+        <img src="{% static 'images/default-prof.jpg' %}" alt="not displayed" class="prof-img-display">
+        {% else %}
+        <img src="{{ user.prof_path }}" alt="" class="prof-img-display">
+        <form action="{% url 'profile' %}" method="post">
             {% csrf_token %}
-            <input type="file" name="update_prof_pic" accept="images/*">
-            <button type="submit">Submit</button>
+            <input type="text" name="delete_prof_pic" hidden>
+            <button type="submit">Delete Profile picture</button>
         </form>
-        <h3>Note profile pic size should be less than 250kb</h3>
-    <h1>{{user.email}}</h1>
-    <form id="update-password" method="post" action="{% url 'profile' %}">
-        {% csrf_token %}
-        <input type="text" name="reset_password"  hidden>
-        <button type="submit">Update Password</button>
-    </form>
-    <h1 id="first_name_hide">{{user.first_name}}</h1>
-        <button id="update-first-name-button">Update First Name</button>
-            <form id="update-first-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
+        {% endif %}
+        <button id="update-prof-pic-button">Update profile picture</button>
+            <form id="update-prof-pic-form" method="post" enctype="multipart/form-data" action="{% url 'profile' %}" style="display: none;" id="profilePicInput">
                 {% csrf_token %}
-                <input type="text" name="update_first_name" value="{{ user.first_name }}">
+                <input type="file" name="update_prof_pic" accept="images/*">
                 <button type="submit">Submit</button>
             </form>
-    <h1 id="last_name_hide">{{user.last_name}}</h1>
-        <button id="update-last-name-button">Update Last Name</button>
-            <form id="update-last-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
-                {% csrf_token %}
-                <input type="text" name="update_last_name" value="{{ user.last_name }}">
-                <button type="submit">Submit</button>
-            </form>
-    <h1 id="user_bio_hide">{{user.userBio}}</h1>
-        <button id="update-userBio-button">Update user Bio Name</button>
-            <form id="update-userBio-form" method="post" action="{% url 'profile' %}" style="display: none;">
-                {% csrf_token %}
-                <textarea name="update_userBio" rows="4" maxlength="255" cols="10">{{ user.userBio }}</textarea>
-                <button type="submit">Submit</button>
-            </form>
-    <!-- Display other user information here as needed -->
-    <h1>Skills</h1>
-    <!-- Show all skills user has -->
-    
-        <ul>
-            {% for skill in user_skills %}
-                <li>
-                    <form action="{% url 'profile' %}" method="post">
-                        {% csrf_token %}
-                        <input type="text" name="delete_skill_to_user" hidden>
-                        <input type="text" id="skill_{{ skill.id }}" name="delete_skill" value="{{ skill.id }}" hidden>
-                        <label for="skill_{{ skill.id }}">{{ skill.name }}</label>
-                        <button type="submit">Delete this skill</button>
-                    </form>
-                    <!-- show all credentials releated to the skill -->
-                    <ul>
-                        {% with links=credential_links|get_dict_value:skill.id %}
-                            <li>
-                                {% if links %}
-                                <h3>delete credentials</h3>
-                                    {% for link in links %}
-                                        <a href="{{ link.linkValue }}" target="_blank">{{ link.linkName }}</a>
-                                        <form action="{% url 'profile' %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="text" name="delete_credential" hidden>
-                                            <input type="text" name="link_name" value="{{ link.linkName }}" hidden>
-                                            <input type="text" name="skill_id" value="{{ skill.id }}" hidden>
-                                            <button type="submit"> Delete this credential </button>
-                                        </form>
-                                    {% endfor %}
-                                {% else %}
-                                <li>No credentials for this skill.</li>
-                                {% endif %}
-
-                            </li>
-                        {% endwith %}
-                    </ul>
-                    <!-- add a link to list -->
-                    <h3>add link</h3>
-                    <form action="{% url 'profile' %}" method="post">
-                        {% csrf_token %}
-                        <input type="text" name="add_credential" hidden>
-                        <input type="text" name="skill_id" value="{{ skill.id }}" hidden>
-                        <label for="link_name">Link name</label>
-                        <input type="text" name="link_name">
-                        <label for="link">Link</label>
-                        <input type="text" name="link">
-                        <button type="submit">Add links</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+            <h3>Note profile pic size should be less than 250kb</h3>
+        <h1>{{user.email}}</h1>
+        <form id="update-password" method="post" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <input type="text" name="reset_password"  hidden>
+            <button type="submit">Update Password</button>
+        </form>
+        <h1 id="first_name_hide">{{user.first_name}}</h1>
+            <button id="update-first-name-button">Update First Name</button>
+                <form id="update-first-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
+                    {% csrf_token %}
+                    <input type="text" name="update_first_name" value="{{ user.first_name }}">
+                    <button type="submit">Submit</button>
+                </form>
+        <h1 id="last_name_hide">{{user.last_name}}</h1>
+            <button id="update-last-name-button">Update Last Name</button>
+                <form id="update-last-name-form" method="post" action="{% url 'profile' %}" style="display: none;">
+                    {% csrf_token %}
+                    <input type="text" name="update_last_name" value="{{ user.last_name }}">
+                    <button type="submit">Submit</button>
+                </form>
+        <h1 id="user_bio_hide">{{user.userBio}}</h1>
+            <button id="update-userBio-button">Update user Bio Name</button>
+                <form id="update-userBio-form" method="post" action="{% url 'profile' %}" style="display: none;">
+                    {% csrf_token %}
+                    <textarea name="update_userBio" rows="4" maxlength="255" cols="10">{{ user.userBio }}</textarea>
+                    <button type="submit">Submit</button>
+                </form>
+    </div>
+    <div class="col">
+        <!-- Display other user information here as needed -->
+        <h1>Skills</h1>
+        <!-- Show all skills user has -->
         
-    <h2>Add skills</h2>
-    <!-- Show all skills user dosent have  -->
-    <form action="{% url 'profile' %}" method="post">
-        <input type="text" name="add_skills_to_user" hidden>
-        {% csrf_token %}
-        <ul>
-            {% for skill in skills_not_possessed %}
-                <li>
+            <ul>
+                {% for skill in user_skills %}
+                    <li>
+                        <form action="{% url 'profile' %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="delete_skill_to_user" hidden>
+                            <input type="text" id="skill_{{ skill.id }}" name="delete_skill" value="{{ skill.id }}" hidden>
+                            <label for="skill_{{ skill.id }}">{{ skill.name }}</label>
+                            <button type="submit">Delete this skill</button>
+                        </form>
+                        <!-- show all credentials releated to the skill -->
+                        <ul>
+                            {% with links=credential_links|get_dict_value:skill.id %}
+                                <li>
+                                    {% if links %}
+                                    <h3>delete credentials</h3>
+                                        {% for link in links %}
+                                            <a href="{{ link.linkValue }}" target="_blank">{{ link.linkName }}</a>
+                                            <form action="{% url 'profile' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="delete_credential" hidden>
+                                                <input type="text" name="link_name" value="{{ link.linkName }}" hidden>
+                                                <input type="text" name="skill_id" value="{{ skill.id }}" hidden>
+                                                <button type="submit"> Delete this credential </button>
+                                            </form>
+                                        {% endfor %}
+                                    {% else %}
+                                    <li>No credentials for this skill.</li>
+                                    {% endif %}
+                                </li>
+                            {% endwith %}
+                        </ul>
+                        <!-- add a link to list -->
+                        <h3>add link</h3>
+                        <form action="{% url 'profile' %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="add_credential" hidden>
+                            <input type="text" name="skill_id" value="{{ skill.id }}" hidden>
+                            <label for="link_name">Link name</label>
+                            <input type="text" name="link_name">
+                            <label for="link">Link</label>
+                            <input type="text" name="link">
+                            <button type="submit">Add link</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+        <h2>Add skills</h2>
+        <!-- Show all skills user dosent have  -->
+        <form action="{% url 'profile' %}" method="post">
+            <input type="text" name="add_skills_to_user" hidden>
+            {% csrf_token %}
+                {% for skill in skills_not_possessed %}
                     <input type="checkbox" id="skill_{{ skill.id }}" name="selected_skills" value="{{ skill.id }}">
-                    <label for="skill_{{ skill.id }}">{{ skill.name }}</label>  
-                </li>
-            {% endfor %}
-        </ul>
-        <button type="submit">Add selected skills</button>
-    </form>
+                    <label for="skill_{{ skill.id }}">{{ skill.name }}</label><br>  
+                {% endfor %}
+            <button type="submit">Add selected skills</button>
+        </form>
+    </div>
 </div>
 {% else %}
     <p>User is not logged in.</p>
