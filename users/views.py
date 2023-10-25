@@ -31,7 +31,7 @@ def verifyOTP(request):
                                         userBio=userBio
                                         )
         if user is not None:
-            messages.success(request,'Tanks for confirming your email registration successful')
+            messages.success(request,'Thanks for confirming, Your email registration is successful')
             return redirect(login_view)
         else:
             messages.error(request,'There was some issue plz try again')
