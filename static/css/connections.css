@@ -31,9 +31,8 @@ form button {
   transition: transform 0.3s ease;
 }
 .prof-img-display {
-  max-width: 100px;
-  height: auto;
-  border-radius: 50%;
+  width: 100px;
+  height: 100px;
 }
 .prof-card:hover {
   transform: scale(1.02); /* Add a subtle hover effect */

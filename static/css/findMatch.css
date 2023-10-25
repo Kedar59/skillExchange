@@ -89,9 +89,8 @@ a {
   list-style: none;
 }
 .prof-img-display {
-  max-width: 100px;
-  height: auto;
-  border-radius: 50%;
+  width: 100px;
+  height: 100px;
 }
 
 .prof-card ul {

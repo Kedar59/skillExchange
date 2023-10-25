@@ -8,6 +8,18 @@ body {
 ul {
   list-style: none;
 }
+.u_name{
+  font-weight: bolder;
+}
+.about-me{
+  font-weight: lighter;
+}
+.login_pls{
+  font-size: 15px !important ;
+  font-weight: bolder;
+  font-kerning:normal;
+  color: red !important;
+}
 .prof-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -18,7 +30,10 @@ ul {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 20px;
 }
+.skill-name-user{
+  font-weight: bold;
 
+}
 /* Styling for the username */
 .prof-section p {
   font-size: 24px;
@@ -28,9 +43,8 @@ ul {
 
 /* Styling for profile picture */
 .prof-img-display {
-  max-width: 200px;
-  height: auto;
-  border-radius: 50%;
+  width: 200px;
+  height: 200px;
   margin: 20px;
 }
 

@@ -20,7 +20,6 @@
 </div>
 <h1>Requests</h1>
 <div class="container">
-    
     {% for prof in con_recieved %}
     <div class="prof-card">
         <a href="{% url 'user_profile' prof.username %}">
@@ -42,6 +41,5 @@
         </form>
     </div>
     {% endfor %}
-
 </div>
 {% endblock content %}

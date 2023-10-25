@@ -55,7 +55,7 @@ def is_valid_password(password):
         return validity
     else:
         validity['valid']=False
-        validity['error']="Must contain a special character like @,#,$,%,^,&,+ or = and must not contain spaces."
+        validity['error']="Password Must contain a special character like @,#,$,%,^,&,+ or = and must not contain spaces."
         return validity
 def findMatch(request):
     user = request.user

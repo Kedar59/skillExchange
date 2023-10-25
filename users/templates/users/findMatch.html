@@ -27,6 +27,7 @@
                 <p>{{ prof.username }}</p>
                 <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
                 <p>{{ prof.userBio }}</p>
+                <h3>Explore my Projects:</h3>
                 <ul class="creds">
                     {% with links=credential_links|get_dict_value:prof.id %}
                         <li>

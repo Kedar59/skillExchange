@@ -8,9 +8,10 @@
 {% block content %}
 <div class="prof-section">
     <div class="col">
-        <p>Username : {{ prof.username }}</p>
+       
         <img class="prof-img-display" src="{{ prof.prof_path }}" alt="profile pic">
-        <p class="about-me">About Me : {{ prof.userBio }}</p>
+        <p class="u_name">{{ prof.username }}</p>
+        <p class="about-me">{{ prof.userBio }}</p>
         {% if user.is_authenticated %}
             {% if user.credebility_score %}
                 {% if req_sent %}
@@ -25,15 +26,17 @@
                 {% endif %}
             {% endif %}
         {% else %}
-        <p>Login to send a connection request</p>
+        <p class="login_pls">*Login to send a connection request*</p>
         {% endif %}
     </div>
     <div class="col">
         {% for skill in prof_skills %}
-            <p> {{ skill.name }} </p>
+            <p class="skill-name-user"> {{ skill.name }} </p>
+            <h3>Explore my Projects:</h3>
                     <ul>
                         {% with links=credential_links|get_dict_value:skill.id %}
                         {% if links %}
+
                             <li>
                                 {% for link in links %}
                                     <a href="{{ link.linkValue }}" target="_blank">{{ link.linkName }}</a>
